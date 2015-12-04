@@ -1,0 +1,16 @@
+{
+  "name": "ts2txt",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall" : "tsd reinstall -so",
+    "start" : "tsc -p . ; node build/generate.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "~1.6.2"
+  }
+}
