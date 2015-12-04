@@ -1,328 +1,70 @@
+import _ = require('lodash');
 import * as ts from 'typescript';
 import {readFileSync} from "fs";
 
+import LanguageServiceHost from './LanguageServiceHost';
 
-console.log('generandoo ');
-enum SyntaxKind {
-        Unknown = 0,
-        EndOfFileToken = 1,
-        SingleLineCommentTrivia = 2,
-        MultiLineCommentTrivia = 3,
-        NewLineTrivia = 4,
-        WhitespaceTrivia = 5,
-        ShebangTrivia = 6,
-        ConflictMarkerTrivia = 7,
-        NumericLiteral = 8,
-        StringLiteral = 9,
-        RegularExpressionLiteral = 10,
-        NoSubstitutionTemplateLiteral = 11,
-        TemplateHead = 12,
-        TemplateMiddle = 13,
-        TemplateTail = 14,
-        OpenBraceToken = 15,
-        CloseBraceToken = 16,
-        OpenParenToken = 17,
-        CloseParenToken = 18,
-        OpenBracketToken = 19,
-        CloseBracketToken = 20,
-        DotToken = 21,
-        DotDotDotToken = 22,
-        SemicolonToken = 23,
-        CommaToken = 24,
-        LessThanToken = 25,
-        LessThanSlashToken = 26,
-        GreaterThanToken = 27,
-        LessThanEqualsToken = 28,
-        GreaterThanEqualsToken = 29,
-        EqualsEqualsToken = 30,
-        ExclamationEqualsToken = 31,
-        EqualsEqualsEqualsToken = 32,
-        ExclamationEqualsEqualsToken = 33,
-        EqualsGreaterThanToken = 34,
-        PlusToken = 35,
-        MinusToken = 36,
-        AsteriskToken = 37,
-        SlashToken = 38,
-        PercentToken = 39,
-        PlusPlusToken = 40,
-        MinusMinusToken = 41,
-        LessThanLessThanToken = 42,
-        GreaterThanGreaterThanToken = 43,
-        GreaterThanGreaterThanGreaterThanToken = 44,
-        AmpersandToken = 45,
-        BarToken = 46,
-        CaretToken = 47,
-        ExclamationToken = 48,
-        TildeToken = 49,
-        AmpersandAmpersandToken = 50,
-        BarBarToken = 51,
-        QuestionToken = 52,
-        ColonToken = 53,
-        AtToken = 54,
-        EqualsToken = 55,
-        PlusEqualsToken = 56,
-        MinusEqualsToken = 57,
-        AsteriskEqualsToken = 58,
-        SlashEqualsToken = 59,
-        PercentEqualsToken = 60,
-        LessThanLessThanEqualsToken = 61,
-        GreaterThanGreaterThanEqualsToken = 62,
-        GreaterThanGreaterThanGreaterThanEqualsToken = 63,
-        AmpersandEqualsToken = 64,
-        BarEqualsToken = 65,
-        CaretEqualsToken = 66,
-        Identifier = 67,
-        BreakKeyword = 68,
-        CaseKeyword = 69,
-        CatchKeyword = 70,
-        ClassKeyword = 71,
-        ConstKeyword = 72,
-        ContinueKeyword = 73,
-        DebuggerKeyword = 74,
-        DefaultKeyword = 75,
-        DeleteKeyword = 76,
-        DoKeyword = 77,
-        ElseKeyword = 78,
-        EnumKeyword = 79,
-        ExportKeyword = 80,
-        ExtendsKeyword = 81,
-        FalseKeyword = 82,
-        FinallyKeyword = 83,
-        ForKeyword = 84,
-        FunctionKeyword = 85,
-        IfKeyword = 86,
-        ImportKeyword = 87,
-        InKeyword = 88,
-        InstanceOfKeyword = 89,
-        NewKeyword = 90,
-        NullKeyword = 91,
-        ReturnKeyword = 92,
-        SuperKeyword = 93,
-        SwitchKeyword = 94,
-        ThisKeyword = 95,
-        ThrowKeyword = 96,
-        TrueKeyword = 97,
-        TryKeyword = 98,
-        TypeOfKeyword = 99,
-        VarKeyword = 100,
-        VoidKeyword = 101,
-        WhileKeyword = 102,
-        WithKeyword = 103,
-        ImplementsKeyword = 104,
-        InterfaceKeyword = 105,
-        LetKeyword = 106,
-        PackageKeyword = 107,
-        PrivateKeyword = 108,
-        ProtectedKeyword = 109,
-        PublicKeyword = 110,
-        StaticKeyword = 111,
-        YieldKeyword = 112,
-        AbstractKeyword = 113,
-        AsKeyword = 114,
-        AnyKeyword = 115,
-        AsyncKeyword = 116,
-        AwaitKeyword = 117,
-        BooleanKeyword = 118,
-        ConstructorKeyword = 119,
-        DeclareKeyword = 120,
-        GetKeyword = 121,
-        IsKeyword = 122,
-        ModuleKeyword = 123,
-        NamespaceKeyword = 124,
-        RequireKeyword = 125,
-        NumberKeyword = 126,
-        SetKeyword = 127,
-        StringKeyword = 128,
-        SymbolKeyword = 129,
-        TypeKeyword = 130,
-        FromKeyword = 131,
-        OfKeyword = 132,
-        QualifiedName = 133,
-        ComputedPropertyName = 134,
-        TypeParameter = 135,
-        Parameter = 136,
-        Decorator = 137,
-        PropertySignature = 138,
-        PropertyDeclaration = 139,
-        MethodSignature = 140,
-        MethodDeclaration = 141,
-        Constructor = 142,
-        GetAccessor = 143,
-        SetAccessor = 144,
-        CallSignature = 145,
-        ConstructSignature = 146,
-        IndexSignature = 147,
-        TypePredicate = 148,
-        TypeReference = 149,
-        FunctionType = 150,
-        ConstructorType = 151,
-        TypeQuery = 152,
-        TypeLiteral = 153,
-        ArrayType = 154,
-        TupleType = 155,
-        UnionType = 156,
-        IntersectionType = 157,
-        ParenthesizedType = 158,
-        ObjectBindingPattern = 159,
-        ArrayBindingPattern = 160,
-        BindingElement = 161,
-        ArrayLiteralExpression = 162,
-        ObjectLiteralExpression = 163,
-        PropertyAccessExpression = 164,
-        ElementAccessExpression = 165,
-        CallExpression = 166,
-        NewExpression = 167,
-        TaggedTemplateExpression = 168,
-        TypeAssertionExpression = 169,
-        ParenthesizedExpression = 170,
-        FunctionExpression = 171,
-        ArrowFunction = 172,
-        DeleteExpression = 173,
-        TypeOfExpression = 174,
-        VoidExpression = 175,
-        AwaitExpression = 176,
-        PrefixUnaryExpression = 177,
-        PostfixUnaryExpression = 178,
-        BinaryExpression = 179,
-        ConditionalExpression = 180,
-        TemplateExpression = 181,
-        YieldExpression = 182,
-        SpreadElementExpression = 183,
-        ClassExpression = 184,
-        OmittedExpression = 185,
-        ExpressionWithTypeArguments = 186,
-        AsExpression = 187,
-        TemplateSpan = 188,
-        SemicolonClassElement = 189,
-        Block = 190,
-        VariableStatement = 191,
-        EmptyStatement = 192,
-        ExpressionStatement = 193,
-        IfStatement = 194,
-        DoStatement = 195,
-        WhileStatement = 196,
-        ForStatement = 197,
-        ForInStatement = 198,
-        ForOfStatement = 199,
-        ContinueStatement = 200,
-        BreakStatement = 201,
-        ReturnStatement = 202,
-        WithStatement = 203,
-        SwitchStatement = 204,
-        LabeledStatement = 205,
-        ThrowStatement = 206,
-        TryStatement = 207,
-        DebuggerStatement = 208,
-        VariableDeclaration = 209,
-        VariableDeclarationList = 210,
-        FunctionDeclaration = 211,
-        ClassDeclaration = 212,
-        InterfaceDeclaration = 213,
-        TypeAliasDeclaration = 214,
-        EnumDeclaration = 215,
-        ModuleDeclaration = 216,
-        ModuleBlock = 217,
-        CaseBlock = 218,
-        ImportEqualsDeclaration = 219,
-        ImportDeclaration = 220,
-        ImportClause = 221,
-        NamespaceImport = 222,
-        NamedImports = 223,
-        ImportSpecifier = 224,
-        ExportAssignment = 225,
-        ExportDeclaration = 226,
-        NamedExports = 227,
-        ExportSpecifier = 228,
-        MissingDeclaration = 229,
-        ExternalModuleReference = 230,
-        JsxElement = 231,
-        JsxSelfClosingElement = 232,
-        JsxOpeningElement = 233,
-        JsxText = 234,
-        JsxClosingElement = 235,
-        JsxAttribute = 236,
-        JsxSpreadAttribute = 237,
-        JsxExpression = 238,
-        CaseClause = 239,
-        DefaultClause = 240,
-        HeritageClause = 241,
-        CatchClause = 242,
-        PropertyAssignment = 243,
-        ShorthandPropertyAssignment = 244,
-        EnumMember = 245,
-        SourceFile = 246,
-        JSDocTypeExpression = 247,
-        JSDocAllType = 248,
-        JSDocUnknownType = 249,
-        JSDocArrayType = 250,
-        JSDocUnionType = 251,
-        JSDocTupleType = 252,
-        JSDocNullableType = 253,
-        JSDocNonNullableType = 254,
-        JSDocRecordType = 255,
-        JSDocRecordMember = 256,
-        JSDocTypeReference = 257,
-        JSDocOptionalType = 258,
-        JSDocFunctionType = 259,
-        JSDocVariadicType = 260,
-        JSDocConstructorType = 261,
-        JSDocThisType = 262,
-        JSDocComment = 263,
-        JSDocTag = 264,
-        JSDocParameterTag = 265,
-        JSDocReturnTag = 266,
-        JSDocTypeTag = 267,
-        JSDocTemplateTag = 268,
-        SyntaxList = 269,
-        Count = 270,
-        FirstAssignment = 55,
-        LastAssignment = 66,
-        FirstReservedWord = 68,
-        LastReservedWord = 103,
-        FirstKeyword = 68,
-        LastKeyword = 132,
-        FirstFutureReservedWord = 104,
-        LastFutureReservedWord = 112,
-        FirstTypeNode = 149,
-        LastTypeNode = 158,
-        FirstPunctuation = 15,
-        LastPunctuation = 66,
-        FirstToken = 0,
-        LastToken = 132,
-        FirstTriviaToken = 2,
-        LastTriviaToken = 7,
-        FirstLiteralToken = 8,
-        LastLiteralToken = 11,
-        FirstTemplateToken = 11,
-        LastTemplateToken = 14,
-        FirstBinaryOperator = 25,
-        LastBinaryOperator = 66,
-        FirstNode = 133,
-}
+import SyntaxKind from './syntaxKind';
 
 
-var file = getSourceFile('./shared.d.ts', ts.ScriptTarget.ES6, console.error);
+_.templateSettings.evaluate = /{{([\s\S]+?)}}/g;
+var template = "{{ this.out(src.statements[0].body.statements[1].body.statements[0]) }}"
 
-transverse(file);
+//readFileSync('./test/template.tpl').toString()
 
-function transverse(sourceFile: ts.SourceFile) {
-        reportNode(sourceFile);
-        function reportNode(node: ts.Node) {
-                switch (node.kind) {
-                        case ts.SyntaxKind.InterfaceDeclaration:
-                                var interf = (<ts.InterfaceDeclaration>node);
-                                console.log(interf.name)
-                        case ts.SyntaxKind.QualifiedName:
-                                var qn = (<ts.QualifiedName>node);
-                                console.log(qn.getText)
-                }
-//                console.log(SyntaxKind[node.kind]);
-                ts.forEachChild(node, reportNode);
+var host = new LanguageServiceHost();
+host.addFile('./test/shared.d.ts', readFileSync('./test/shared.d.ts').toString());
+var languageService = ts.createLanguageService(host, ts.createDocumentRegistry());
+
+var file = getSourceFile('./test/shared.d.ts', console.error);
+var locals = {
+        definition: function out(node: ts.Node) {
+             var def = languageService.getTypeDefinitionAtPosition('test/shared.d.ts', node.getStart());
+        },
+
+        out: function out(msg) {
+                console.log('============== ', msg)
         }
+        
+}
+var compiled = _.template(template).bind(locals);
+console.log(compiled({src: file}));
+
+//createTree(file);
+
+var scs = languageService.getSemanticClassifications('test/shared.d.ts', {start: 0, length: file.end});
+
+scs
+  .filter(sc => sc.classificationType=='interface name')
+  .map(sc => languageService.getDefinitionAtPosition('test/shared.d.ts', sc.textSpan.start))
+  .forEach(def => {
+         console.log(def);
+  })
+
+
+
+
+function createTree(sourceFile: ts.SourceFile) {
+        var ntabs = 0;        
+        transverse(sourceFile);
+        var definition = [];
+        function transverse(node: any) {
+                ntabs++;
+                var def: any = languageService.getDefinitionAtPosition('test/shared.d.ts', node.getStart());
+                if(def && def instanceof Array) {
+                        for(let d of def) {
+                                console.log(_.repeat('\t', ntabs), d);  
+                        }  
+                }      
+                ts.forEachChild(node, transverse);
+                ntabs--;
+        }
+        var modules :any= sourceFile.statements[0];
+
 }
 
 
-function getSourceFile(fileName: string, languageVersion: ts.ScriptTarget, onError?: (message: string) => void) {
+function getSourceFile(fileName: string, onError?: (message: string) => void) {
         return ts.createSourceFile(fileName, readFileSync(fileName).toString(), ts.ScriptTarget.ES6, /*setParentNodes */ true);
 }
 

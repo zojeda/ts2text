@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall" : "tsd reinstall -so",
-    "start" : "tsc -p . ; node build/generate.js"
+    "postinstall": "npm link typescript && tsd reinstall -so && tsc -p . ",
+    "start": "tsc -p . && node build/generate.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "typescript": "~1.6.2"
+    "dot": "^1.0.3",
+    "lodash": "^3.10.1",
+    "swig": "^1.4.2"
   }
 }
