@@ -6,10 +6,9 @@ declare namespace shared {
 		}		
 	}
 	namespace service {
-		export interface ServiceResponeCallback<T> {( error?: Error, response?: T ) : void}
 			
 		export interface IUserService {
-			list(done : ServiceResponeCallback<model.IUser> ) : void;
+			list(done : (error: Error, users: shared.model.IUser[]) => void ) : void;
 		}		
 	}
 }

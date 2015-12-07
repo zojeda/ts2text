@@ -3,14 +3,14 @@
 		"module": "commonjs",
 		"target": "ES5",
 		"noEmitOnError": false,
-		"outDir": "./build",
-		"sourceMap": true,
-		"rootDir": "src"
+		"outDir": "./lib",
+		"sourceMap": true
 	},
 	"fileGlobs": [
 		"src/**/*.ts"
 	],
 	"exclude": [
-        "node_modules"
-    ]	
+    "node_modules",
+		"test"
+  ]	
 }

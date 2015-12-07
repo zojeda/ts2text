@@ -1,18 +1,19 @@
 {
-  "name": "ts2txt",
+  "name": "ts2text",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "transform your typescript files using handlebars template engine",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "npm link typescript && tsd reinstall -so && tsc -p . ",
-    "start": "tsc -p . && node build/generate.js"
+    "postinstall": "npm link typescript && tsd reinstall -so && tsc -p . "
   },
-  "author": "",
+  "author": "Zacarias F. Ojeda <zojeda@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "dot": "^1.0.3",
+    "circular-json": "^0.3.0",
+    "handlebars": "^4.0.5",
     "lodash": "^3.10.1",
-    "swig": "^1.4.2"
+    "through2": "^2.0.0",
+    "vinyl": "^1.1.0"
   }
 }

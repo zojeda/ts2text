@@ -1,6 +1,9 @@
 import * as ts from 'typescript';
 
 export default class MyLanguageServiceHost implements ts.LanguageServiceHost {
+    constructor() {
+      this.addFile('lib.ts', '');
+    }
     files: { [fileName: string]: { file: ts.IScriptSnapshot; ver: number } } = {}
 
     log = _ => { };
@@ -9,14 +12,10 @@ export default class MyLanguageServiceHost implements ts.LanguageServiceHost {
     getCompilationSettings = ts.getDefaultCompilerOptions;
     getScriptIsOpen = _ => true;
     getCurrentDirectory = () => "";
-    getDefaultLibFileName = _ => "lib";
 
-    getScriptVersion = fileName => {
-        return this.files['./test/shared.d.ts'].ver.toString();
-    }
-    getScriptSnapshot = fileName => {
-        return this.files['./test/shared.d.ts'].file;
-    }
+    getDefaultLibFileName = _ => "lib";
+    getScriptVersion = fileName => this.files[fileName].ver.toString();
+    getScriptSnapshot = fileName => this.files[fileName].file;
 
     getScriptFileNames(): string[] {
         var names: string[] = [];
