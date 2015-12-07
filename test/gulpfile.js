@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 var fs = require('fs')
 
-var ts2text = require('../lib');
+var ts2text = require('../');
 
 
 
