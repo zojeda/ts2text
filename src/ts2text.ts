@@ -1,46 +1,31 @@
 import Handlebars = require('handlebars');
-import CircularJSON = require('circular-json');
 import File = require('vinyl');
 
-
+import Configuration from './Configuration';
 import SourceModel from './SourceModel';
 
-Handlebars.registerHelper('if', function(conditional, options) {
-  if(objectExpression(conditional, this)) {
-    return options.fn(this);
-  }
-});
-
-Handlebars.registerHelper('eval', function(expr) {
-  return objectExpression(expr, this)
-});
-Handlebars.registerHelper('nodetext', function() {
-  return this.getText();
-});
-
-Handlebars.registerHelper('remove', function(text, toRemove) {
-  return text.replace(toRemove, '')
-});
-Handlebars.registerHelper('json', function(element) {
-  return CircularJSON.stringify(element, null, 2);
-});
+import builtInHelpers from './builtInHelpers'
 
 
-function objectExpression(expression, obj) {
-  var result = `return ${expression} ;`;
-  var args : string[] = Object.keys(obj);
-  var conditionExpr = new Function(args.join(','), result);
-  var argsValues = args.map(arg => obj[arg]);
-  return conditionExpr.apply(obj, argsValues);
-}
+function ts2text(configuration: Configuration, tsInputFile: File) : File[] {
+  var output : File[] = [];
+  output.push(new File({
+      path: configuration.outputPath,
+  }))
 
-function ts2text(template: string, input: File) {
-  var sourceModel = new SourceModel(input)
+  var helpers = builtInHelpers(output)  
+  Object.keys(helpers)
+    .forEach( helperName => Handlebars.registerHelper(helperName, helpers[helperName]) )
+
   
-  var compiled = Handlebars.compile(template);
-  return compiled({
+  var sourceModel = new SourceModel(tsInputFile)
+  
+  var compiled = Handlebars.compile(configuration.template);
+  var producedContent = compiled({
       definitions: sourceModel.definitions
   });
-};
+  output[0].contents = new Buffer(producedContent)
 
+  return output;
+}
 export = ts2text;

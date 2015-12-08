@@ -1,6 +1,8 @@
 {{#definitions}}
 	{{#if "kind=='interface' && name.endsWith('Service') "}}
-class Default{{eval "name.substring(1)"}} implements shared.service.{{name}} {
+	{{#block-params (eval "name.substring(1)") as | classname |}}
+{{#outputFile stem=classname extname="ts"}}
+class {{classname}} implements shared.service.{{name}} {
 
 			{{#each methodSignatures}}
 	{{{remove (nodetext) ';'}}} {
@@ -8,5 +10,7 @@ class Default{{eval "name.substring(1)"}} implements shared.service.{{name}} {
 	}
 			{{/each}}
 }
+{{/outputFile}}
+	{{/block-params}}	
 	{{/if}}
 {{/definitions}}
