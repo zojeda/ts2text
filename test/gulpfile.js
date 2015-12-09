@@ -5,7 +5,7 @@ var ts2text = require('../');
 
 
 
-var template = fs.readFileSync('./template.tpl').toString()
+var template = require('./template.hbs');
 
 gulp.task('generate', function () {
   return gulp.src('./*.d.ts')
