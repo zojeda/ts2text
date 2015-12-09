@@ -1,6 +1,6 @@
 {
   "name": "ts2text",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "transform your typescript files using handlebars template engine",
   "main": "lib/index.js",
   "repository": {
@@ -10,7 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsd reinstall -so && tsc -p . ",
-    "prepublish": "tsc run build",
+    "prepublish": "npm run build",
     "postinstall": "npm link typescript"
   },
   "author": "Zacarias F. Ojeda <zojeda@gmail.com>",
