@@ -13,12 +13,10 @@ function ts2text(configuration: Configuration, tsInputFile: File) : File[] {
       path: configuration.outputPath,
   }))
 
-  var helpers = builtInHelpers(output)  
+  var sourceModel = new SourceModel(tsInputFile)
+  var helpers = builtInHelpers(output, sourceModel)  
   Object.keys(helpers)
     .forEach( helperName => Handlebars.registerHelper(helperName, helpers[helperName]) )
-
-  
-  var sourceModel = new SourceModel(tsInputFile)
   
   var compiled = Handlebars.compile(configuration.template);
   var producedContent = compiled({

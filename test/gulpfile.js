@@ -3,9 +3,7 @@ var fs = require('fs')
 
 var ts2text = require('../');
 
-
-
-var template = require('./template.hbs');
+var template = fs.readFileSync('./template.hbs').toString();
 
 gulp.task('generate', function () {
   return gulp.src('./*.d.ts')

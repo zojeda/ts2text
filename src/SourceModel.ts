@@ -9,6 +9,7 @@ import ModelDefinition from './ModelDefinition';
 export default class SourceModel {
   sourceFile: ts.SourceFile;
   sourceContent: string;
+  languageService: ts.LanguageService;
   definitions: ModelDefinition[] = [];
 
   constructor(file: File) {
@@ -35,11 +36,11 @@ export default class SourceModel {
   createDefinitions() {
     var host = new LanguageServiceHost();
     host.addFile(this.sourceFile.fileName, this.sourceContent);
-    var languageService = ts.createLanguageService(host, ts.createDocumentRegistry());
-    var classifications = languageService.getEncodedSemanticClassifications(this.sourceFile.fileName, { start: 0, length: this.sourceFile.end });
+    this.languageService = ts.createLanguageService(host, ts.createDocumentRegistry());
+    var classifications = this.languageService.getEncodedSemanticClassifications(this.sourceFile.fileName, { start: 0, length: this.sourceFile.end });
 
     var defs = classifications.spans
-      .map(span => languageService.getDefinitionAtPosition(this.sourceFile.fileName, span) || [])
+      .map(span => this.languageService.getDefinitionAtPosition(this.sourceFile.fileName, span) || [])
       .reduce((prev, curr) => prev.concat(curr))
 
     defs = _.uniq(defs, false, (value, index, array) => {
