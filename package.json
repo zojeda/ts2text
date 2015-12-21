@@ -10,8 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsd reinstall -so && tsc -p . ",
-    "prepublish": "npm run build",
-    "postinstall": "npm link typescript"
+    "prepublish": "npm run build"
   },
   "author": "Zacarias F. Ojeda <zojeda@gmail.com>",
   "license": "ISC",
