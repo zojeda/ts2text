@@ -2,6 +2,7 @@
 {{#if "kind=='interface' && name.endsWith('Service') "}}
 {{#block-params (eval "name.substring(1)") as | classname |}}
 {{#outputFile stem=classname extname="ts"}}
+/*{{firstLowercase classname}}*/
 class {{classname}} implements shared.service.{{name}} {
 
 {{#each methodSignatures}}
@@ -10,7 +11,10 @@ class {{classname}} implements shared.service.{{name}} {
 	}
 {{/each}}
 }
+/*{{{qualifiedName this}}}*/	
+/*{{{json this}}}*/
 {{/outputFile}}
-{{/block-params}}	
+{{/block-params}}
+
 {{/if}}
 {{/definitions}}
