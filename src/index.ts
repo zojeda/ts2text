@@ -5,7 +5,7 @@ import ts2text = require('./ts2text');
 
 import Configuration from './Configuration'
 
-module.exports = function(configuration: Configuration) {
+exports = function(configuration: Configuration) {
   
   var transform = function(file, encoding, callback) {
     var producedContent = ts2text(configuration, file);

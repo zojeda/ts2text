@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsd reinstall -so && tsc -p . ",
+    "build": "tsd reinstall -so; tsc -p . ",
     "prepublish": "npm run build"
   },
   "author": "Zacarias F. Ojeda <zojeda@gmail.com>",
@@ -20,5 +20,14 @@
     "lodash": "^3.10.1",
     "through2": "^2.0.0",
     "vinyl": "^1.1.0"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-mocha": "^2.2.0",
+    "gulp-sourcemap": "^1.0.1",
+    "gulp-typescript": "^2.10.0",
+    "mocha": "^2.3.4",
+    "vinyl-fs-fake": "^1.1.0"
   }
 }

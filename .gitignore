@@ -1,4 +1,5 @@
 node_modules/
+build/
 typings/
 lib/
 npm-debug.log

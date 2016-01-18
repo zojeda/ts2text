@@ -8,9 +8,6 @@
     "node/node.d.ts": {
       "commit": "c3ab375b371b7b4204adee3b1209baecd81cec02"
     },
-    "typescript/typescript.d.ts": {
-      "commit": "e5a27ea95e47b95333784f1f0d590127b4e39a89"
-    },
     "lodash/lodash.d.ts": {
       "commit": "e5a27ea95e47b95333784f1f0d590127b4e39a89"
     },

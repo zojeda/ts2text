@@ -18,6 +18,10 @@
 	"tasks": [
 		{
 			"taskName": "build",
+			"args": [
+				"run", "build"
+			],
+			"suppressTaskName": true,
 			"problemMatcher": "$tsc",
 			"isBuildCommand": true
 		}
