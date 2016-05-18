@@ -1,6 +1,6 @@
 {
   "name": "ts2text",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "transform your typescript files using handlebars template engine",
   "main": "lib/src/index.js",
   "repository": {
